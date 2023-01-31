@@ -3,30 +3,33 @@
 #include <locale.h> //biblioteca de alocação de espaço de memoria
 #include <string.h> // biblioteca que cuida de string
 
-int registro()
+int registro()  //função para cadastrar usuarios
+
 {
+	//inicio da criação de variaveis
 	char arquivo[40];
 	char cpf[40];
 	char nome[40];
 	char sobrenome[40];
 	char cargo[40];
+	// final de criação de variaveis
 	
-	print("Informe o CPF para cadastro: ");
-	scanf("%s", cpf);
+	printf("Informe o CPF para cadastro: ");
+	scanf("%s", cpf); // %s usado para salvar strings
 	
 	strcpy(arquivo, cpf);// é quem copia o valor da string
 	
 	FILE *file; // cria o arquivo
-	file = fopen(arquivo, "w");
-	fprintf(file, cpf); //salvo o valor da variavel
+	file = fopen(arquivo, "w"); // w significa escrever
+	fprintf(file,cpf); //salvo o valor da variavel
 	fclose(file); //fecha o arquivo
 	
-	file = fopen(arquivo, "a");
-	fprintf(file, ",");
+	file = fopen(arquivo, "a"); // a significa alterar
+	fprintf(file,",");
 	fclose(file);
 	
-	printf("Digite o nome para cadastro");
-	scanf("%s", nome);
+	printf("Digite o nome para cadastro: ");
+	scanf("%s",nome);
 	
 	file = fopen(arquivo, "a");
 	fprintf(file,nome);
@@ -36,8 +39,8 @@ int registro()
 	fprintf(file,",");
 	fclose(file);
 	
-	printf("Digite o sobrenome para cadastro");
-	scanf("%s", sobrenome);
+	printf("Digite o sobrenome para cadastro: ");
+	scanf("%s",sobrenome);
 	
 	file = fopen(arquivo, "a");
 	fprintf(file,sobrenome);
@@ -48,7 +51,7 @@ int registro()
 	fclose(file);
 	
 	printf("Digite o cargo do cadastrado: ");
-	scanf("%s, cargo");
+	scanf("%s",cargo);
 	
 	file = fopen(arquivo, "a");
 	fprintf(file,cargo);
@@ -59,13 +62,51 @@ int registro()
 }
 int consulta()
 {
-	printf("você escolheu consulta de nomes \n");
-	system("pause");
+	setlocale(LC_ALL, "PORTUGUESE"); // definir a ligua
+	
+	char cpf[40];
+	char conteudo[200];
+	
+	printf("Digite o CPF a ser consultado: ");
+	scanf("%s", cpf);
+	
+	FILE *file;
+	file = fopen(cpf,"r"); // r significa read
+
+	
+	if(file == NULL)
+ {
+		printf("NÃO FOI POSSÍVEL LOCALIZAR O ARQUIVO.\n");
+			
+}
+	while(fgets(conteudo, 200, file) != NULL)
+	{
+		printf("\n Essas são as informações do usuario: ");
+		printf("%s", conteudo);
+		printf("\n\n");
+		fclose(file);
+	
+	}
+		system("pause");
+	
 }
 int excluir()
 {
-	printf("você escolheu exclusão de nomes \n");
-	system("pause");
+	char cpf[40];
+	
+	printf("Informe o CPF a ser excluido: ");
+	scanf("%s",cpf);
+	
+	remove(cpf);
+	
+	FILE *file;
+	file = fopen(cpf,"r");
+	
+	if(file == NULL)
+	{
+			printf("O cpf indicado não foi encontrado. \n" );
+			system("pause");
+	}
 }
 
 
@@ -79,7 +120,7 @@ int main ()
 	for(x=1;x=10;)
 	{
 	
-		system("cls");
+		system("cls"); // limpar a tela
 	setlocale(LC_ALL, "PORTUGUESE"); // definir a ligua
 
 
@@ -88,6 +129,7 @@ int main ()
 		printf("\t1 - Registro de Nomes \n");
 		printf("\t2 - Consulta de Nomes \n");
 		printf("\t3 - Exclusão de Nomes \n\n"); 
+		printf("\t4 - Sair do sistema \n\n");
 		printf("Opção: ");// fim do menu
 	
 		scanf("%d", &opcao); //armazenamento de escolha
@@ -99,7 +141,7 @@ int main ()
 		switch(opcao)
 		{
 			case 1:
-				registro();
+				registro(); // chamada de funções
 				break;
 			
 			case 2:
@@ -110,6 +152,11 @@ int main ()
 				excluir();
 				break;
 				
+			case 4:
+			printf("obrigado por utilizar o sistema Ebac");	
+			return 0;
+			break;
+			
 			default:
 				printf("Esta opção não existe \n");
 				system("pause");
